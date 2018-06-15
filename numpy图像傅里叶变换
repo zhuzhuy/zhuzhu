@@ -1,0 +1,31 @@
+
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+img=cv2.imread("brain.bmp",0)
+img=cv2.resize(img,(128,128))
+mask=cv2.imread('mask.png',0)
+
+img_fft=np.fft.fft2(img)    #图像进行二维傅里叶变换
+img_fft_shift=np.fft.fftshift(img_fft)  #进行中心频移
+fimg=np.log(np.abs(img_fft_shift))      #使用log不然变化太小图像一片黑，因为傅里叶后的图像是复数使用abs
+undersample=np.multiply(img_fft,mask)   #使用条纹mask欠采样后的频域图像
+img_under=np.fft.ifft2(undersample)
+
+fig=plt.figure()
+ax1=fig.add_subplot(221)
+ax1.imshow(img,cmap='gray')
+plt.title('initial image')
+ax2=fig.add_subplot(222)
+ax2.imshow(fimg,cmap="gray")
+plt.title('shift_image')
+ax3=fig.add_subplot(223)
+ax3.imshow(mask,cmap='gray')
+plt.title('mask')
+ax4=fig.add_subplot(224)
+ax4.imshow(np.log(np.abs(img_under)), cmap='gray')
+plt.title('undersampled image')
+plt.show()
+
+
