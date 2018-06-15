@@ -4,7 +4,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 img=cv2.imread("brain.bmp",0)
-img=cv2.resize(img,(128,128))
+img=cv2.resize(img,(128,128))   #mask图片是128*128，变换图片到128*128
 mask=cv2.imread('mask.png',0)
 
 img_fft=np.fft.fft2(img)    #图像进行二维傅里叶变换
