@@ -1,0 +1,19 @@
+#改变图片的类型，将任何种类的图片转换成.bmp格式
+
+import cv2
+import os
+
+#dir和dir_new分别为新、旧图片存放路径，文件中存放的图片是医学图像MR brain image
+
+dir="MRIFreeDatasetn"
+dir_new="data_bmp"
+file_list=os.listdir(dir)
+
+for f in file_list:
+    name,text=os.path.splitext(f)
+    if text == '.bmp':
+        a=os.path.join(dir_new,name)
+        file_dir=os.path.join(dir,f)
+        image=cv2.imread(file_dir,0)    #单通道读取灰度图像，默认为三通道也就是彩色图像
+        cv2.imwrite(a+'.bmp', image)#转成其它格式只需要改一下后缀
+        #cv2.imwrite(a + '.jpg', image) 转成.jpg格式
