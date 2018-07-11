@@ -1,0 +1,19 @@
+#输入图像是（378，1512，3）的三通道灰度图像，是feature、label、reconstruction、resnet级联的图片，首先将级联的图片分开
+
+import cv2
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+img=cv2.imread('save_figure/image0.png')  #存储路径
+fig=img[:,:378,:]
+label=img[:,378:756,:]
+recon=img[:,756:1134,:]
+# plt.imshow(recon,cmap='gray')
+label_1=tf.convert_to_tensor(label,dtype=tf.float32)
+label_1=tf.expand_dims(label_1,axis=0)#tensorflow规定的使用带有batch_size的维度
+recon_1=tf.convert_to_tensor(recon,dtype=tf.float32)
+recon_1=tf.expand_dims(recon_1,axis=0)
+brain_ssim=tf.image.ssim(label_1,recon_1,max_val=255)
+with tf.Session() as sess:
+    ssim_1=sess.run(brain_ssim)
+    print(ssim_1)
